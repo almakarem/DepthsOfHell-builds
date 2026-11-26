@@ -1,0 +1,32 @@
+{
+	"number": 384,
+	"version": "0.1.0",
+	"date": "2026-11-26",
+	"tag": "b384",
+	"file": "DepthsOfHell-384.pck",
+	"size": 236995604,
+	"sha256": "d16a8823ee3715583a3263b99f9ec20ae22f5f722698bd54438dd03c41aa5c2e",
+	"signature": "ibLB6me+aqaANgaBNIRqmySXMN/X3pKRSJw4GgsuDLhWDIgaAXB4YRs3RN4fbo3QuV0sxiA5fT7g+fGk00JOixIuzVbgD/Ml/a6vacxOMBQ8c8el3BJTr+TsM5Du4lQ2axOl2jEDd3Bf/4Q7VBqDmqQzfnT2e5fb0pmtjR8DJluzTKE6Oyi0XnYuTcmob2i5HrOnCZj7LjnA91Z5RgTw3/V99jr73+6efoY1VvXfu6hHod9gwAovw7Q1vg7w4cGp//Ynx/gdOn+S7cvG7O43vmyIVifYclsObGAyjeDIsWnmCcnzUP4ox8gkqyP0xdiJWVAbhaBYnyZtRgqykS7C1Q==",
+	"engine": "4.7.2",
+	"notes": "Build 384\n- Behemoth: rebuilt and re-rigged (no more torn pieces or holes in his shadow) with all-new animations: a heavy idle, a lantern idle, walk, run and every attack; the machete sits in his fist and the lantern hangs from his hand and swings.\n- Infinite: a Guardian's room now seals properly.\n- The update box shows the real download size (the small patch when it can).",
+	"patches": [
+		{
+			"from": 364,
+			"file": "DepthsOfHell-384-from-364.patch",
+			"size": 4770677,
+			"sha256": "a9110500b028e943b08d8219ae29f55361853924026dd5adbb6dc97f25b4388d"
+		},
+		{
+			"from": 377,
+			"file": "DepthsOfHell-384-from-377.patch",
+			"size": 2781168,
+			"sha256": "05828930747096fd8c185f03b05107f03d07a5d3ab1f16c6b942c87922c94003"
+		},
+		{
+			"from": 382,
+			"file": "DepthsOfHell-384-from-382.patch",
+			"size": 2395331,
+			"sha256": "e301cc9a0cb3b1ef4182c453379bc80a5986c411c0f03ac670eaca782312be15"
+		}
+	]
+}
