@@ -79,8 +79,12 @@ def run(cmd, log=None):
 def render(name, blender, work, a):
     frames = os.path.join(work, name, "frames")
     os.makedirs(frames, exist_ok=True)
-    cmd = [blender, "-b", os.path.join(SCENES, name + ".blend"), "-P", os.path.join(KIT, "blender_setup.py"), "-a",
-           "--", "--out", frames, "--engine", a.engine]
+    if a.show:  # Blender opens its window and shows each frame; blender_setup.py starts the render and quits after
+        cmd = [blender, os.path.join(SCENES, name + ".blend"), "-P", os.path.join(KIT, "blender_setup.py"),
+               "--", "--out", frames, "--engine", a.engine, "--show"]
+    else:
+        cmd = [blender, "-b", os.path.join(SCENES, name + ".blend"), "-P", os.path.join(KIT, "blender_setup.py"), "-a",
+               "--", "--out", frames, "--engine", a.engine]
     if a.frames:
         cmd += ["--frames", a.frames]
     if a.samples:
@@ -194,6 +198,7 @@ def main():
                     help="the scenes are made for EEVEE; cycles uses the GPU via HIP (AMD), else OPTIX/CUDA")
     ap.add_argument("--jobs", type=int, default=max(1, (os.cpu_count() or 2) - 1), help="parallel post-processing workers")
     ap.add_argument("--skip-render", action="store_true", help="reuse frames already in work/")
+    ap.add_argument("--show", action="store_true", help="open Blender's window and watch each frame render (closes itself after each scene)")
     a = ap.parse_args()
 
     names = VIDEOS

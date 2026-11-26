@@ -16,6 +16,7 @@ ap.add_argument("--samples", type=int, default=0, help="render samples (default:
 ap.add_argument("--percent", type=int, default=100, help="render size in percent (for quick tests)")
 ap.add_argument("--engine", default="scene", choices=["scene", "eevee", "cycles"])
 ap.add_argument("--device", default="gpu", choices=["gpu", "cpu"], help="Cycles only")
+ap.add_argument("--show", action="store_true", help="Blender runs with its window: render the animation in a render window, then quit")
 a = ap.parse_args(argv)
 
 sc = bpy.context.scene
@@ -80,3 +81,33 @@ else:
 print("[setup] %s  engine=%s  device=%s  frames=%d-%d  size=%dx%d@%d%%  -> %s" % (
     os.path.basename(bpy.data.filepath), r.engine, dev, sc.frame_start, sc.frame_end,
     r.resolution_x, r.resolution_y, r.resolution_percentage, r.filepath), flush=True)
+
+
+# --show: Blender was started with its window (no -b, no -a). Start the animation render in a render
+# window once the UI is up, and quit Blender when it finishes (or is cancelled) so render_all.py carries on.
+if a.show and not bpy.app.background:
+    prefs = bpy.context.preferences
+    prefs.use_preferences_save = False          # nothing below is saved into the user's preferences
+    prefs.view.render_display_type = "WINDOW"   # show the frames in their own render window
+
+    def _quit():
+        bpy.ops.wm.quit_blender()
+        return None
+
+    def _done(scene, *args):
+        print("[setup] render finished, closing Blender", flush=True)
+        bpy.app.timers.register(_quit, first_interval=1.0)
+
+    bpy.app.handlers.render_complete.append(_done)
+    bpy.app.handlers.render_cancel.append(_done)
+
+    def _start():
+        wm = bpy.context.window_manager
+        if not wm.windows:
+            return 0.5
+        win = wm.windows[0]
+        with bpy.context.temp_override(window=win, screen=win.screen):
+            bpy.ops.render.render("INVOKE_DEFAULT", animation=True)
+        return None
+
+    bpy.app.timers.register(_start, first_interval=2.0)
